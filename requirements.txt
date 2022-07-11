@@ -5,6 +5,6 @@ matplotlib == 3.5.1
 openpyxl == 3.0.9
 pyxlsb == 1.0.9
 XlsxWriter == 3.0.2
-sklearn
+sklearn == 0.0
 PuLP == 2.6.0
 
