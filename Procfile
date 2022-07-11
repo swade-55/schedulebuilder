@@ -1,1 +1,1 @@
-web: sh setup.sh && streamlit run Report.py
+web: sh setup.sh && streamlit run Bid.py
