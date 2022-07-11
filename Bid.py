@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
+from io import BytesIO
 from sklearn.ensemble import RandomForestClassifier
 
 st.write("""
@@ -115,7 +116,18 @@ plt.title('Workforce: Demand vs. Supply',fontsize=16)
 plt.xlabel('Day of the week',fontsize=16)
 plt.ylabel('Number of Workers',fontsize=16)
 plt.show()
-
+def to_excel(df):
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=True, sheet_name='Volume')
+    workbook = writer.book
+    writer.save()
+    processed_data = output.getvalue()
+    return processed_data
+#df_xlsx = to_excel(st.session_state.volume,st.session_state.cph, st.session_state.uptime)
+df_xlsx = to_excel(df_sch)
+st.download_button(label='📥 Export to Excel', data=df_xlsx ,file_name= 'schedule'+'.xlsx')
+st.write(df_sch)
 st.pyplot(plt)
 
 
