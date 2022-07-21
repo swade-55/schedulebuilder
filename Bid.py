@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import pickle
 from sklearn.ensemble import RandomForestClassifier
+from io import BytesIO
 
 st.write("""
 # Schdule Builder App
@@ -118,5 +119,18 @@ st.pyplot(plt)
 st.subheader('Schedule')
 st.write(df_sch)
 
-#st.subheader('Schedule')
-#st.write(df_supp)
+def to_excel(df):
+    output = BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, index=True, sheet_name='Volume')
+    workbook = writer.book
+    writer.save()
+    processed_data = output.getvalue()
+    return processed_data
+#df_xlsx = to_excel(st.session_state.volume,st.session_state.cph, st.session_state.uptime)
+df_xlsx = to_excel(df_sch)
+
+st.subheader('Schedule Variance')
+st.write(df_supp)
+
+st.download_button(label='📥 Export to Excel', data=df_xlsx ,file_name= 'schedule'+'.xlsx')
